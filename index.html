@@ -1,0 +1,217 @@
+<title>IBD Therapeutic Landscape</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single scrolling column; the map itself is a stage-ordered grid that scrolls sideways on its own. */
+:root{
+  --bg:#f7f7f4; --surface:#fcfcfb; --surface-2:#f0efe9;
+  --ink:#14140f; --ink-2:#52514e; --ink-3:#8b8a83;
+  --rule:#e1e0d9; --rule-2:#c9c8c0;
+  --accent:#2a78d6; --accent-soft:#cde2fb;
+  --warn:#b4541f; --dead:#9a3b3b;
+  --s1:#cde2fb; --s2:#9ec5f4; --s3:#5598e7; --s4:#2a78d6; --s5:#184f95;
+  --font-display:"Newsreader",Georgia,serif;
+  --font-body:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f0f0e; --surface:#1a1a19; --surface-2:#232321;
+  --ink:#f0efec; --ink-2:#c3c2b7; --ink-3:#898781;
+  --rule:#2c2c2a; --rule-2:#3c3c38;
+  --accent:#3987e5; --accent-soft:#184f95;
+  --warn:#e09a6a; --dead:#e07070;
+  --s1:#104281; --s2:#184f95; --s3:#256abf; --s4:#3987e5; --s5:#86b6ef;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0f0f0e; --surface:#1a1a19; --surface-2:#232321;
+  --ink:#f0efec; --ink-2:#c3c2b7; --ink-3:#898781;
+  --rule:#2c2c2a; --rule-2:#3c3c38;
+  --accent:#3987e5; --accent-soft:#184f95;
+  --warn:#e09a6a; --dead:#e07070;
+  --s1:#104281; --s2:#184f95; --s3:#256abf; --s4:#3987e5; --s5:#86b6ef;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.6;margin:0}
+.wrap{max-width:1140px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0}
+h1,h2,h3{font-family:var(--font-display);font-weight:500;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.1rem,5.5vw,3.4rem);line-height:1.08;letter-spacing:-.015em}
+h2{font-size:clamp(1.35rem,3vw,1.75rem);line-height:1.2;margin-bottom:.5rem}
+h3{font-size:1.05rem;font-family:var(--font-body);font-weight:600;letter-spacing:-.005em}
+p{margin:0 0 1rem}
+a{color:var(--accent)}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:0 0 .9rem}
+
+header{padding-block:clamp(2.5rem,7vw,4.5rem) clamp(1.75rem,4vw,2.5rem);border-bottom:1px solid var(--rule)}
+.lede{font-family:var(--font-display);font-size:clamp(1.05rem,2.3vw,1.3rem);line-height:1.5;color:var(--ink-2);max-width:62ch;margin:1.25rem 0 0}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;margin-top:1.5rem;font-family:var(--font-mono);font-size:.74rem;color:var(--ink-3)}
+
+section{padding-block:clamp(2.25rem,5vw,3.25rem);border-bottom:1px solid var(--rule)}
+.intro{max-width:66ch;color:var(--ink-2);margin-bottom:1.75rem}
+
+/* Stat row */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:3px;overflow:hidden;margin:0 0 2rem}
+.stat{background:var(--surface);padding:1.1rem 1.15rem}
+.stat .v{font-family:var(--font-display);font-size:2rem;line-height:1;letter-spacing:-.02em;display:block}
+.stat .k{font-size:.8rem;color:var(--ink-2);margin-top:.45rem;display:block}
+.stat .n{font-family:var(--font-mono);font-size:.68rem;color:var(--ink-3);margin-top:.3rem;display:block}
+
+/* Map grid */
+.scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--surface)}
+.map{display:grid;grid-template-columns:168px repeat(5,minmax(146px,1fr));min-width:900px}
+.map>div{border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:.6rem .65rem}
+.map>div:nth-child(6n){border-right:none}
+.colhead{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);background:var(--surface-2);position:sticky;top:0}
+.rowhead{font-weight:600;font-size:.82rem;line-height:1.35;background:var(--surface-2);min-width:0}
+.rowhead span{display:block;font-weight:400;font-size:.72rem;color:var(--ink-3);margin-top:.2rem}
+.cell{display:flex;flex-direction:column;gap:.3rem;min-width:0}
+.chip{font-size:.76rem;line-height:1.3;padding:.3rem .45rem;border-radius:2px;border-left:2px solid var(--accent);background:var(--surface-2);min-width:0;overflow-wrap:anywhere}
+.chip b{font-weight:600;display:block}
+.chip i{font-style:normal;font-family:var(--font-mono);font-size:.66rem;color:var(--ink-3);display:block;margin-top:.1rem}
+.chip.dead{border-left-color:var(--dead)}
+.chip.dead b{text-decoration:line-through;text-decoration-thickness:1px}
+.chip.flag{border-left-color:var(--warn)}
+.legend{display:flex;flex-wrap:wrap;gap:1rem;margin-top:.85rem;font-size:.76rem;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:.4rem}
+.swatch{width:10px;height:10px;border-radius:2px;flex:none}
+
+/* Chart */
+.figure{background:var(--surface);border:1px solid var(--rule);border-radius:3px;padding:1.1rem}
+.figcap{font-size:.8rem;color:var(--ink-2);margin:.9rem 0 0;max-width:72ch}
+svg{display:block;width:100%;height:auto;max-width:100%}
+.ax{font-family:var(--font-mono);font-size:10px;fill:var(--ink-3)}
+.lbl{font-family:var(--font-body);font-size:11.5px;fill:var(--ink-2)}
+.val{font-family:var(--font-mono);font-size:10.5px;fill:var(--ink);font-weight:500}
+.chartlegend{display:flex;gap:1.25rem;font-size:.78rem;color:var(--ink-2);margin-bottom:.75rem;flex-wrap:wrap}
+
+/* Findings */
+.finds{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.find{background:var(--surface);padding:1.15rem 1.25rem}
+.find h3{margin-bottom:.4rem}
+.find p{margin:0;color:var(--ink-2);font-size:.92rem}
+.find .tag{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:.45rem}
+
+/* Table */
+table{width:100%;border-collapse:collapse;font-size:.84rem}
+th,td{text-align:left;padding:.5rem .6rem;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);font-weight:500}
+td.num{font-variant-numeric:tabular-nums;font-family:var(--font-mono)}
+.gaps{counter-reset:g;list-style:none;padding:0;margin:0;display:grid;gap:.55rem}
+.gaps li{padding-left:2rem;position:relative;color:var(--ink-2);font-size:.9rem}
+.gaps li::before{counter-increment:g;content:counter(g);position:absolute;left:0;top:.05rem;font-family:var(--font-mono);font-size:.7rem;color:var(--ink-3);border:1px solid var(--rule-2);border-radius:2px;width:1.3rem;height:1.3rem;display:grid;place-items:center}
+/* Judgements */
+.calls{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.call{background:var(--surface);padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.6rem;min-width:0}
+.call .cls{font-weight:600;font-size:.92rem;line-height:1.3}
+.call .cls em{display:block;font-style:normal;font-weight:400;font-size:.74rem;color:var(--ink-3);margin-top:.15rem}
+.verdicts{display:flex;gap:.35rem;flex-wrap:wrap}
+.verdicts button{font:inherit;font-size:.76rem;padding:.26rem .6rem;border-radius:2px;border:1px solid var(--rule-2);background:transparent;color:var(--ink-2);cursor:pointer}
+.verdicts button:hover{border-color:var(--ink-3)}
+.verdicts button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:500}
+:root[data-theme="dark"] .verdicts button[aria-pressed="true"],
+.verdicts button[aria-pressed="true"]{color:#fff}
+.call textarea{font:inherit;font-size:.84rem;line-height:1.5;color:var(--ink);background:var(--surface-2);border:1px solid var(--rule);border-radius:2px;padding:.5rem .6rem;resize:vertical;min-height:4.5rem;width:100%;min-width:0}
+.call textarea::placeholder{color:var(--ink-3)}
+.call textarea:focus-visible,.verdicts button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.verdict-tag{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;padding:.2rem .45rem;border-radius:2px;align-self:flex-start}
+.v-back{background:var(--accent);color:#fff}
+.v-watch{background:var(--surface-2);color:var(--ink-2);border:1px solid var(--rule-2)}
+.v-pass{background:var(--dead);color:#fff}
+.call .note-ro{font-size:.88rem;color:var(--ink-2);margin:0;white-space:pre-wrap}
+.call .empty{font-size:.84rem;color:var(--ink-3);font-style:italic;margin:0}
+.savestate{font-family:var(--font-mono);font-size:.66rem;color:var(--ink-3);min-height:1em}
+.callsnote{font-size:.82rem;color:var(--ink-3);margin-top:.9rem}
+
+/* Map 2 chips: linked, marked Map 1 vs New */
+a.chip{color:inherit;text-decoration:none;display:block}
+a.chip:hover{background:var(--accent-soft)}
+.chip.new{border-left-style:dashed;background:transparent;outline:1px dashed var(--rule-2);outline-offset:-1px}
+.chip em{font-style:normal;font-family:var(--font-mono);font-size:.58rem;letter-spacing:.06em;text-transform:uppercase;padding:0 .3rem;border-radius:2px;margin-left:.3rem;vertical-align:1px}
+.b1,.bn{font-style:normal;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;padding:.05rem .3rem;border-radius:2px}
+.b1{background:var(--accent);color:#fff}
+.bn{border:1px dashed var(--accent);color:var(--accent)}
+/* Framework table + sources */
+table.fw{min-width:980px;font-size:.78rem}
+table.fw td{line-height:1.4}
+table.fw td:first-child{font-weight:600;white-space:nowrap}
+td.tbd{color:var(--ink-3);font-style:italic}
+.srcs{list-style:none;padding:0;margin:0;display:grid;gap:.4rem;font-size:.86rem}
+.stag{font-family:var(--font-mono);font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);display:inline-block;min-width:9.5rem}
+.persp{max-width:72ch}
+.persp h3{margin:1.4rem 0 .45rem}
+.persp p{color:var(--ink-2)}
+table.calls-t{min-width:760px}
+table.calls-t td:first-child{font-weight:600}
+table.calls-t td.maps{color:var(--ink-3);font-size:.78rem}
+footer{padding-block:2.25rem 3rem;color:var(--ink-3);font-size:.8rem}
+footer p{max-width:72ch}
+@media (max-width:620px){.stat .v{font-size:1.6rem}}
+</style>
+<style>
+details{border-top:1px solid var(--rule);padding:.55rem 0}
+details:last-of-type{border-bottom:1px solid var(--rule)}
+details summary{cursor:pointer;font-family:var(--font-body);font-weight:600;font-size:1rem;color:var(--ink)}
+details summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+details[open] summary{margin-bottom:.5rem}
+.persp h3.overall{margin-top:1.6rem}
+.toplinks{display:flex;flex-wrap:wrap;gap:.6rem 1.25rem;margin-top:1.25rem;font-size:.85rem}
+.toplinks a{font-weight:500}
+.sub{font-family:var(--font-display);font-size:clamp(1.05rem,2.3vw,1.3rem);color:var(--ink-2);margin:.6rem 0 0}
+.srcgroup h3{margin:1.1rem 0 .45rem;font-size:.9rem}
+.stop{margin-top:.5rem}
+</style>
+<div class="wrap">
+<header>
+  <p class="eyebrow">Independent investment analysis · October 2026</p>
+  <h1>IBD Therapeutic Landscape</h1>
+  <p class="sub">Investment opportunities &amp; scientific due diligence</p>
+  <div class="meta"><span>Independent research by Xinyue Li</span><span>Last verified 28 Oct 2026</span><span>Investment brief · about 3 minutes</span></div>
+  <div class="toplinks"><a href="#summary">Summary</a><a href="#perspective">Perspective</a><a href="#calls">Judgments</a><a href="#case">Accro case study</a><a href="appendix.html">Detailed research: full maps, registry view and methodology →</a></div>
+</header>
+
+<section id="summary">
+  <p class="eyebrow">Executive summary</p>
+  <h2>Three conclusions</h2>
+  <p class="lede" style="margin:0 0 1.5rem">Pharma is paying today for validated targets in better formats. The more differentiated opportunity, and my main scientific interest, is approaches that restore immune homeostasis rather than block single mediators, provided they are validated in human disease.</p>
+  <div class="finds">
+    <div class="find"><span class="tag">1 · Validated targets, better formats</span><h3>Pharma pays for convenience and combinability on proven pathways</h3><p>Gilead paid $1.275B upfront for a Phase 1 oral IL-23R peptide in October 2026 (<a href="https://medcitynews.com/2026/10/gilead-sciences-oral-peptide-il-23-inhibitor-pepstar-immunology-inflammation-ibd-gild/">source</a>); J&amp;J's oral icotrokinra and its guselkumab + golimumab combination raise the bar further, and three anti-TL1A antibodies are in Phase 3 at once. Differentiation, not validation, is now the hard part. <a href="#calls">My judgment →</a></p></div>
+    <div class="find"><span class="tag">2 · Attractive biology often fails to translate</span><h3>The negative evidence is as informative as the successes</h3><p>An anti-OSMR antibody was stopped for futility in UC (<a href="https://clinicaltrials.gov/study/NCT06137183">NCT06137183</a>), a TYK2 inhibitor missed in UC and Crohn's, and rituximab failed in UC. The mechanisms differ, but together they argue for human target validation in the right disease context. <a href="appendix.html">Full evidence in the appendix →</a></p></div>
+    <div class="find"><span class="tag">3 · Where room remains</span><h3>Upstream sensing, immune homeostasis and different endpoints</h3><p>RIPK2 inhibition targets microbial sensing upstream of TNF and IL-12/23, with randomised data due in 2027. Approaches that restore immune homeostasis are early but differentiated. Fibrostenotic Crohn's is judged on stricture length rather than remission and has no approved therapy. <a href="#case">The RIPK2 case study →</a></p></div>
+  </div>
+</section>
+
+<section id="perspective">
+  <p class="eyebrow">My investment perspective</p>
+  <h2>Validated targets versus immune reprogramming</h2>
+  <p class="intro" style="font-size:.84rem">Five themes; select one to read my reasoning. The overall judgment is below them.</p>
+  <div class="persp"><details><summary>1. Validated targets remain attractive, particularly with improved delivery</summary><p>Recent pharmaceutical investment continues to favour clinically validated inflammatory pathways, including IL-23 and TL1A, with increasing emphasis on oral administration, longer dosing intervals and combination approaches. These strategies offer a clearer development rationale, although differentiation and competition are becoming increasingly important. I would prioritise programmes that deliver meaningful improvements in convenience without compromising efficacy or safety.</p></details><details><summary>2. Novel immunomodulatory mechanisms could offer differentiated opportunities</summary><p>Obefazimod (Abivax) is particularly interesting given its encouraging Phase 3 results in ulcerative colitis. Its proposed mechanism involves upregulation of miR-124, but I believe the precise molecular pathways responsible for its clinical effects warrant further investigation. The results nevertheless suggest that approaches beyond conventional cytokine blockade deserve serious attention.</p></details><details><summary>3. Macrophage reprogramming is an area I would investigate further</summary><p>My scientific interest lies in the role of macrophages in coordinating intestinal inflammation: they contribute to cytokine production, immune-cell recruitment and interactions with stromal cells involved in tissue remodelling and fibrosis. Rather than blocking individual mediators, I am interested in whether restoring homeostatic macrophage functions could reduce inflammatory signalling, limit pathological recruitment and support tissue repair at the same time.</p>
+    <p>This remains a hypothesis. The key questions are whether disease-associated macrophage states can be selectively and durably reprogrammed in human tissue, whether this improves clinically relevant outcomes, and whether essential host defence is preserved.</p></details><details><summary>4. Immune-reprogramming startups merit continued monitoring</summary><p>I would monitor companies developing macrophage-directed therapies, regulatory T-cell approaches and other immune-reprogramming strategies. Many remain early-stage, with substantial uncertainty around delivery, durability, safety and clinical translation. I would prioritise opportunities with convincing human disease biology, measurable pharmacodynamic biomarkers and a feasible path to clinical proof of concept.</p></details><details><summary>5. Rational combination therapies may offer another route to deeper remission</summary><p>IBD involves interacting inflammatory pathways, and inhibiting a single mechanism may not control disease in all patients. Combinations must demonstrate incremental benefit that justifies additional safety risk, treatment burden and cost; I would focus on those supported by complementary biology, biomarker-defined populations and a credible development strategy.</p></details><h3 class="overall">Overall judgment</h3>
+    <p>I see two complementary opportunities in IBD: improving established mechanisms through differentiated drug formats and combinations, and identifying novel approaches capable of restoring immune homeostasis. My strongest scientific interest is in macrophage and broader immune reprogramming, but I would distinguish scientific promise from investment readiness, and advance opportunities only when human disease relevance, therapeutic differentiation and a credible development pathway justify further diligence.</p>
+  </div>
+</section>
+
+<section id="calls">
+  <p class="eyebrow">Investment judgments</p>
+  <h2>Prioritise, diligence or watch</h2>
+  <p class="intro">Preliminary judgments at the level of therapeutic approach, not recommendations to invest in particular companies. High-priority diligence means I would take a first meeting with a credible team in this area today; it is not yet a recommendation to invest. Watch means the mechanism is real but something has to resolve first.</p>
+  <div class="scroll"><table class="calls-t"><thead><tr><th>Therapeutic approach</th><th>Call</th><th>Reason</th></tr></thead><tbody><tr><td>Oral therapies against validated targets</td><td><span class="verdict-tag v-back">High-priority diligence</span></td><td>Stronger clinical validation, but differentiation is essential</td></tr><tr><td>Rational combination therapies</td><td><span class="verdict-tag v-back">High-priority diligence</span></td><td>Potential for incremental benefit if complementary mechanisms and safety are demonstrated</td></tr><tr><td>RIPK2 inhibition (see case study)</td><td><span class="verdict-tag v-watch">Targeted diligence</span></td><td>Emerging clinical validation; prioritise controlled efficacy, safety and pharmacological differentiation</td></tr><tr><td>Fibrostenotic Crohn's disease</td><td><span class="verdict-tag v-watch">Selective diligence</span></td><td>High unmet need and distinct clinical endpoints; require human target validation and evidence of meaningful fibrosis reversal</td></tr><tr><td>Persistent stromal states</td><td><span class="verdict-tag v-watch">Watch / Discovery</span></td><td>Promising human biology; new discovery platforms may identify causal, druggable regulators, but translational validation remains early</td></tr><tr><td>Obefazimod / miR-124 modulation</td><td><span class="verdict-tag v-watch">Watch closely</span></td><td>Encouraging clinical results; mechanistic questions remain</td></tr><tr><td>Macrophage reprogramming</td><td><span class="verdict-tag v-watch">Explore / Watch</span></td><td>Potential to influence multiple disease processes, but limited clinical validation</td></tr><tr><td>Treg and broader immune reprogramming</td><td><span class="verdict-tag v-watch">Watch</span></td><td>Differentiated biology; delivery, safety and durability remain uncertain</td></tr></tbody></table></div>
+</section>
+
+<section id="case">
+  <p class="eyebrow">Company case study</p>
+  <h2>Accro Bioscience (Accropeutics): AC-101, an oral RIPK2 inhibitor</h2>
+  <div class="finds">
+    <div class="find"><span class="tag">The company</span><p>Private, Suzhou. $50M Series C in May 2026 led by OrbiMed, with TCG Crossover and Lilly Asia Ventures. AC-101 has completed Phase 1 in Australia and China and a proof-of-concept Phase 1b/2a in Chinese UC patients. A randomised, double-blind, placebo-controlled Phase 2b in moderate-to-severe UC dosed its first patient on 20 September 2026, with primary completion estimated for November 2027 (<a href="https://clinicaltrials.gov/study/NCT07755241">NCT07755241</a>; <a href="https://www.accropeutics.com/news/110.html">Series C</a>).</p></div>
+    <div class="find"><span class="tag">The competitive frame</span><p>Odyssey Therapeutics' OD-001 leads the class with open-label Phase 2a data (<a href="https://www.globenewswire.com/news-release/2026/10/20/3384218/0/en/odyssey-therapeutics-presents-completed-phase-2a-od-001-induction-results-strengthening-clinical-proof-of-concept-at-ueg-week-2026.html">source</a>) (27% clinical remission and 61% response at week 12, 20 mg twice daily) and randomised trials reading out in H2 2027. Oncodesign's OPM-101 has healthy-volunteer data only, and GSK stopped an earlier RIPK2 inhibitor on toxicology findings.</p></div>
+    <div class="find"><span class="tag">My diligence questions</span><p><b>Clinical differentiation:</b> does AC-101 show convincing placebo-adjusted efficacy, dose response and a competitive safety profile? <b>Mechanistic differentiation:</b> is RIPK2 inhibition sufficiently selective, and can biomarkers identify likely responders? <b>Commercial opportunity:</b> are the intellectual property, global development strategy and valuation attractive relative to competitors?</p></div>
+    <div class="find"><span class="tag">My recommendation</span><p>Advance Accro to focused scientific and commercial diligence, with a view to participating in a future financing round ahead of the Phase 2b readout.</p><p class="stop"><b>I would stop diligence if</b> AC-101 shows inadequate target engagement at tolerable doses, fails to separate from placebo or to differentiate from OD-001 in Phase 2b, or if the financing terms or cross-border investment structure are unfavourable.</p></div>
+  </div>
+</section>
+
+
+
+<footer>
+  <p>Independent research by Xinyue Li, October 2026; last verified 28 October 2026. AI tools (Claude) were used to search, extract and organise sources and to build these pages; interpretation and investment judgments are the author's, and material claims were checked against the linked sources. Nothing here is investment advice or a clinical recommendation. <a href="appendix.html">Detailed research and methodology</a>.</p>
+</footer>
+</div>

@@ -1,0 +1,361 @@
+<title>IBD Landscape Research Appendix</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+h1{font-size:clamp(1.7rem,4vw,2.4rem)}
+
+/* Layout: a single scrolling column; the map itself is a stage-ordered grid that scrolls sideways on its own. */
+:root{
+  --bg:#f7f7f4; --surface:#fcfcfb; --surface-2:#f0efe9;
+  --ink:#14140f; --ink-2:#52514e; --ink-3:#8b8a83;
+  --rule:#e1e0d9; --rule-2:#c9c8c0;
+  --accent:#2a78d6; --accent-soft:#cde2fb;
+  --warn:#b4541f; --dead:#9a3b3b;
+  --s1:#cde2fb; --s2:#9ec5f4; --s3:#5598e7; --s4:#2a78d6; --s5:#184f95;
+  --font-display:"Newsreader",Georgia,serif;
+  --font-body:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0f0f0e; --surface:#1a1a19; --surface-2:#232321;
+  --ink:#f0efec; --ink-2:#c3c2b7; --ink-3:#898781;
+  --rule:#2c2c2a; --rule-2:#3c3c38;
+  --accent:#3987e5; --accent-soft:#184f95;
+  --warn:#e09a6a; --dead:#e07070;
+  --s1:#104281; --s2:#184f95; --s3:#256abf; --s4:#3987e5; --s5:#86b6ef;
+  color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#0f0f0e; --surface:#1a1a19; --surface-2:#232321;
+  --ink:#f0efec; --ink-2:#c3c2b7; --ink-3:#898781;
+  --rule:#2c2c2a; --rule-2:#3c3c38;
+  --accent:#3987e5; --accent-soft:#184f95;
+  --warn:#e09a6a; --dead:#e07070;
+  --s1:#104281; --s2:#184f95; --s3:#256abf; --s4:#3987e5; --s5:#86b6ef;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:15px;line-height:1.6;margin:0}
+.wrap{max-width:1140px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0}
+h1,h2,h3{font-family:var(--font-display);font-weight:500;text-wrap:balance;margin:0}
+h1{font-size:clamp(2.1rem,5.5vw,3.4rem);line-height:1.08;letter-spacing:-.015em}
+h2{font-size:clamp(1.35rem,3vw,1.75rem);line-height:1.2;margin-bottom:.5rem}
+h3{font-size:1.05rem;font-family:var(--font-body);font-weight:600;letter-spacing:-.005em}
+p{margin:0 0 1rem}
+a{color:var(--accent)}
+.eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin:0 0 .9rem}
+
+header{padding-block:clamp(2.5rem,7vw,4.5rem) clamp(1.75rem,4vw,2.5rem);border-bottom:1px solid var(--rule)}
+.lede{font-family:var(--font-display);font-size:clamp(1.05rem,2.3vw,1.3rem);line-height:1.5;color:var(--ink-2);max-width:62ch;margin:1.25rem 0 0}
+.meta{display:flex;flex-wrap:wrap;gap:.5rem 1.5rem;margin-top:1.5rem;font-family:var(--font-mono);font-size:.74rem;color:var(--ink-3)}
+
+section{padding-block:clamp(2.25rem,5vw,3.25rem);border-bottom:1px solid var(--rule)}
+.intro{max-width:66ch;color:var(--ink-2);margin-bottom:1.75rem}
+
+/* Stat row */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:3px;overflow:hidden;margin:0 0 2rem}
+.stat{background:var(--surface);padding:1.1rem 1.15rem}
+.stat .v{font-family:var(--font-display);font-size:2rem;line-height:1;letter-spacing:-.02em;display:block}
+.stat .k{font-size:.8rem;color:var(--ink-2);margin-top:.45rem;display:block}
+.stat .n{font-family:var(--font-mono);font-size:.68rem;color:var(--ink-3);margin-top:.3rem;display:block}
+
+/* Map grid */
+.scroll{overflow-x:auto;border:1px solid var(--rule);border-radius:3px;background:var(--surface)}
+.map{display:grid;grid-template-columns:168px repeat(5,minmax(146px,1fr));min-width:900px}
+.map>div{border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:.6rem .65rem}
+.map>div:nth-child(6n){border-right:none}
+.colhead{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-2);background:var(--surface-2);position:sticky;top:0}
+.rowhead{font-weight:600;font-size:.82rem;line-height:1.35;background:var(--surface-2);min-width:0}
+.rowhead span{display:block;font-weight:400;font-size:.72rem;color:var(--ink-3);margin-top:.2rem}
+.cell{display:flex;flex-direction:column;gap:.3rem;min-width:0}
+.chip{font-size:.76rem;line-height:1.3;padding:.3rem .45rem;border-radius:2px;border-left:2px solid var(--accent);background:var(--surface-2);min-width:0;overflow-wrap:anywhere}
+.chip b{font-weight:600;display:block}
+.chip i{font-style:normal;font-family:var(--font-mono);font-size:.66rem;color:var(--ink-3);display:block;margin-top:.1rem}
+.chip.dead{border-left-color:var(--dead)}
+.chip.dead b{text-decoration:line-through;text-decoration-thickness:1px}
+.chip.flag{border-left-color:var(--warn)}
+.legend{display:flex;flex-wrap:wrap;gap:1rem;margin-top:.85rem;font-size:.76rem;color:var(--ink-2)}
+.legend span{display:inline-flex;align-items:center;gap:.4rem}
+.swatch{width:10px;height:10px;border-radius:2px;flex:none}
+
+/* Chart */
+.figure{background:var(--surface);border:1px solid var(--rule);border-radius:3px;padding:1.1rem}
+.figcap{font-size:.8rem;color:var(--ink-2);margin:.9rem 0 0;max-width:72ch}
+svg{display:block;width:100%;height:auto;max-width:100%}
+.ax{font-family:var(--font-mono);font-size:10px;fill:var(--ink-3)}
+.lbl{font-family:var(--font-body);font-size:11.5px;fill:var(--ink-2)}
+.val{font-family:var(--font-mono);font-size:10.5px;fill:var(--ink);font-weight:500}
+.chartlegend{display:flex;gap:1.25rem;font-size:.78rem;color:var(--ink-2);margin-bottom:.75rem;flex-wrap:wrap}
+
+/* Findings */
+.finds{display:grid;gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.find{background:var(--surface);padding:1.15rem 1.25rem}
+.find h3{margin-bottom:.4rem}
+.find p{margin:0;color:var(--ink-2);font-size:.92rem}
+.find .tag{font-family:var(--font-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);display:block;margin-bottom:.45rem}
+
+/* Table */
+table{width:100%;border-collapse:collapse;font-size:.84rem}
+th,td{text-align:left;padding:.5rem .6rem;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);font-weight:500}
+td.num{font-variant-numeric:tabular-nums;font-family:var(--font-mono)}
+.gaps{counter-reset:g;list-style:none;padding:0;margin:0;display:grid;gap:.55rem}
+.gaps li{padding-left:2rem;position:relative;color:var(--ink-2);font-size:.9rem}
+.gaps li::before{counter-increment:g;content:counter(g);position:absolute;left:0;top:.05rem;font-family:var(--font-mono);font-size:.7rem;color:var(--ink-3);border:1px solid var(--rule-2);border-radius:2px;width:1.3rem;height:1.3rem;display:grid;place-items:center}
+/* Judgements */
+.calls{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:3px;overflow:hidden}
+.call{background:var(--surface);padding:1rem 1.1rem;display:flex;flex-direction:column;gap:.6rem;min-width:0}
+.call .cls{font-weight:600;font-size:.92rem;line-height:1.3}
+.call .cls em{display:block;font-style:normal;font-weight:400;font-size:.74rem;color:var(--ink-3);margin-top:.15rem}
+.verdicts{display:flex;gap:.35rem;flex-wrap:wrap}
+.verdicts button{font:inherit;font-size:.76rem;padding:.26rem .6rem;border-radius:2px;border:1px solid var(--rule-2);background:transparent;color:var(--ink-2);cursor:pointer}
+.verdicts button:hover{border-color:var(--ink-3)}
+.verdicts button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:500}
+:root[data-theme="dark"] .verdicts button[aria-pressed="true"],
+.verdicts button[aria-pressed="true"]{color:#fff}
+.call textarea{font:inherit;font-size:.84rem;line-height:1.5;color:var(--ink);background:var(--surface-2);border:1px solid var(--rule);border-radius:2px;padding:.5rem .6rem;resize:vertical;min-height:4.5rem;width:100%;min-width:0}
+.call textarea::placeholder{color:var(--ink-3)}
+.call textarea:focus-visible,.verdicts button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.verdict-tag{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;padding:.2rem .45rem;border-radius:2px;align-self:flex-start}
+.v-back{background:var(--accent);color:#fff}
+.v-watch{background:var(--surface-2);color:var(--ink-2);border:1px solid var(--rule-2)}
+.v-pass{background:var(--dead);color:#fff}
+.call .note-ro{font-size:.88rem;color:var(--ink-2);margin:0;white-space:pre-wrap}
+.call .empty{font-size:.84rem;color:var(--ink-3);font-style:italic;margin:0}
+.savestate{font-family:var(--font-mono);font-size:.66rem;color:var(--ink-3);min-height:1em}
+.callsnote{font-size:.82rem;color:var(--ink-3);margin-top:.9rem}
+
+/* Map 2 chips: linked, marked Map 1 vs New */
+a.chip{color:inherit;text-decoration:none;display:block}
+a.chip:hover{background:var(--accent-soft)}
+.chip.new{border-left-style:dashed;background:transparent;outline:1px dashed var(--rule-2);outline-offset:-1px}
+.chip em{font-style:normal;font-family:var(--font-mono);font-size:.58rem;letter-spacing:.06em;text-transform:uppercase;padding:0 .3rem;border-radius:2px;margin-left:.3rem;vertical-align:1px}
+.b1,.bn{font-style:normal;font-family:var(--font-mono);font-size:.6rem;letter-spacing:.06em;text-transform:uppercase;padding:.05rem .3rem;border-radius:2px}
+.b1{background:var(--accent);color:#fff}
+.bn{border:1px dashed var(--accent);color:var(--accent)}
+/* Framework table + sources */
+table.fw{min-width:980px;font-size:.78rem}
+table.fw td{line-height:1.4}
+table.fw td:first-child{font-weight:600;white-space:nowrap}
+td.tbd{color:var(--ink-3);font-style:italic}
+.srcs{list-style:none;padding:0;margin:0;display:grid;gap:.4rem;font-size:.86rem}
+.stag{font-family:var(--font-mono);font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);display:inline-block;min-width:9.5rem}
+.persp{max-width:72ch}
+.persp h3{margin:1.4rem 0 .45rem}
+.persp p{color:var(--ink-2)}
+table.calls-t{min-width:760px}
+table.calls-t td:first-child{font-weight:600}
+table.calls-t td.maps{color:var(--ink-3);font-size:.78rem}
+footer{padding-block:2.25rem 3rem;color:var(--ink-3);font-size:.8rem}
+footer p{max-width:72ch}
+@media (max-width:620px){.stat .v{font-size:1.6rem}}
+</style>
+
+<div class="wrap">
+<header>
+  <p style="margin:0 0 1.25rem;padding:.6rem .8rem;border:1px solid var(--rule-2);border-radius:3px;background:var(--surface);font-size:.84rem;color:var(--ink-2)"><b>Research appendix.</b> The investment conclusions, judgments and case study are on the main page: <a href="index.html">IBD Therapeutic Landscape: investment opportunities &amp; scientific due diligence</a>.</p>
+  <p class="eyebrow">Detailed research · October 2026</p>
+  <h1>Research appendix</h1>
+  <p class="sub" style="font-family:var(--font-display);font-size:1.15rem;color:var(--ink-2);margin:.5rem 0 0">Data, maps and methodology behind the IBD investment brief</p>
+  <p class="lede">The evidence behind the investment analysis: every mechanism class in IBD development placed by stage, a systematic clinical-trial registry sweep, detailed efficacy benchmarks, and the full methodology and sources.</p>
+  <div class="meta">
+    <span>Independent research by Xinyue Li</span>
+    <span>Last verified 28 Oct 2026</span>
+    <span>Curated map: 63 programmes · Registry view: 104 programmes from 286 trials (overlapping — not additive)</span>
+  </div>
+  <div class="meta" style="margin-top:.6rem"><a href="#framework">Assessment framework</a><a href="#mapcurated">Curated map</a><a href="#map2">Registry view</a><a href="#bench">Benchmarks</a><a href="#benchtable">Benchmark table</a><a href="#method">Methodology</a><a href="#sources">Sources</a></div>
+</header>
+
+<section id="framework">
+  <p class="eyebrow">A1 · Assessment framework</p>
+  <h2>Five dimensions for the shortlisted classes</h2>
+  <p class="intro">Each shortlisted class is described on the same five dimensions, with the evidence behind it. The final column is the author's qualitative assessment; the full investment reasoning is on the main page. Financing terms, intellectual property and management quality would still need company-level diligence; no score alone decides investability.</p>
+  <div class="scroll"><table class="fw"><thead><tr><th>Class</th><th>Human target validation</th><th>Clinical differentiation</th><th>Development feasibility</th><th>Competitive intensity</th><th>Commercial opportunity</th><th>Author's assessment</th></tr></thead><tbody><tr><td>RIPK2 inhibition</td><td>NOD2 is the strongest Crohn's risk gene, but risk variants lose function; activating NOD2 mutations (Blau syndrome) support blocking the pathway</td><td>Open-label Ph2a (Odyssey): 27% remission at 20 mg BID; no placebo-controlled data yet</td><td>Oral small molecule; GSK2983559 stopped on non-clinical toxicology</td><td>Odyssey (public), Accro Bioscience (private), OPM-101 (listed micro-cap), BI preclinical</td><td>Oral and combinable (Odyssey testing with vedolizumab)</td><td><span class="verdict-tag v-watch">Targeted diligence</span><br><span style="font-size:.74rem;color:var(--ink-2)">Emerging clinical validation; prioritise controlled efficacy, safety and pharmacological differentiation.</span></td></tr><tr><td>Fibrostenotic Crohn's</td><td>Crohn's risk loci concentrate in inflammatory-fibroblast tissue zones; FAP+ TWIST1+ fibroblasts mark fibrotic regions (Kong 2025)</td><td>Different endpoint (stricture length); no approved therapy; surgery is standard</td><td>Imaging endpoint still being established; RXC008 has FDA Fast Track</td><td>RXC008 (ROCK), ontunisertib (ALK5)</td><td>Surgery avoidance; Skye–Redx combination with $125M financing</td><td><span class="verdict-tag v-watch">Selective diligence</span><br><span style="font-size:.74rem;color:var(--ink-2)">High unmet need and distinct clinical endpoints; require human target validation and evidence of meaningful fibrosis reversal.</span></td></tr><tr><td>Persistent stromal state</td><td>Human tissue atlas, 18 stromal states, state persists and HDAC inhibition destabilises it (Koplev 2026); Glis3 deletion reduces colitis in mice (Pokatayev 2026)</td><td>No clinical programme; anti-OSMR (vixarelimab) failed in UC</td><td>Regulators are transcription factors (hard to drug); epigenetic route has precedent</td><td>Mestag (stromal, oncology lead); otherwise open</td><td>Add-on to biologics in refractory patients</td><td><span class="verdict-tag v-watch">Watch / Discovery</span><br><span style="font-size:.74rem;color:var(--ink-2)">Promising human biology; new discovery platforms may identify causal, druggable regulators, but translational validation remains early.</span></td></tr><tr><td>Oral IL-23R</td><td>IL-23 validated by three approved antibodies</td><td>Icotrokinra Ph2b in UC (NEJM, Oct 2026); oral convenience</td><td>High</td><td>J&amp;J icotrokinra (Ph3), Gilead HCXT-2001 (Ph1)</td><td>Large; fast-follower dynamics</td><td><span class="verdict-tag v-back">High-priority diligence</span></td></tr><tr><td>Anti-TL1A</td><td>Ph2 placebo-adjusted remission 15–26 points (class review)</td><td>Ph3 met primary (tulisokibart) but figures unpublished</td><td>High</td><td>Three Ph3 antibodies, bispecifics, half-life-extended follow-ons</td><td>Large but crowded</td><td><span class="verdict-tag v-back">High-priority diligence</span></td></tr></tbody></table></div>
+</section>
+
+<section id="mapcurated">
+  <p class="eyebrow">A2 · Curated mechanism map</p>
+  <h2>Eleven classes, five stages</h2>
+  <p class="intro">Each chip is one programme. Position is development stage; the row is what the drug does. Red marks a programme that failed or was withdrawn; negative results are as informative as successes.</p>
+
+  <div class="scroll">
+    <div class="map">
+      <div class="colhead">Class</div>
+      <div class="colhead">Preclinical / discovery</div>
+      <div class="colhead">Phase 1</div>
+      <div class="colhead">Phase 2</div>
+      <div class="colhead">Phase 3 / filing</div>
+      <div class="colhead">Approved</div>
+
+      <div class="rowhead">Cytokine &amp; pathway antibodies<span>IL-23, TL1A — and the IL-17 warning</span></div>
+      <div class="cell"><div class="chip"><b>TL1A×IL-23 bispecific</b><i>Beijing VDJBio · patent</i></div><div class="chip"><b>MAX001</b><i>Maxion · ion-channel KnotBody · IBD named · $72M A</i></div></div>
+      <div class="cell"><div class="chip"><b>XmAb412</b><i>Xencor · dual IL-23/TL1A, long-acting · Ph1</i></div><div class="chip"><b>HCXT-2001</b><i>PepStar (Shanghai) → Gilead · oral IL-23R macrocyclic peptide · $1.275B upfront, Oct 2026 · no clinical data yet</i></div><div class="chip flag"><b>SR-878</b><i>SciRhom · anti-iRhom2 · healthy-volunteer study stopped: unexpected rise in inflammation markers · restarted in RA, safety only, to 2028 · IBD preclinical</i></div><div class="chip"><b>CLD-423</b><i>Caldera · TL1A×IL-23p19 · $112.5M A</i></div><div class="chip"><b>BYN-002</b><i>Bionyra · TL1A, half-life ext · $165M A</i></div><div class="chip"><b>BYN-003</b><i>Bionyra · TL1A×IL-23p19 bispecific</i></div></div>
+      <div class="cell"><div class="chip"><b>HXN-1001</b><i>Earendil · anti-TL1A</i></div><div class="chip"><b>Picankibart</b><i>ECCO 2026 data</i></div><div class="chip"><b>SPY002</b><i>Spyre · SKYLINE</i></div><div class="chip"><b>SPY003</b><i>Spyre · anti-IL-23p19, ~3× half-life</i></div><div class="chip dead"><b>Secukinumab</b><i>anti-IL-17A · stopped, CD worsened</i></div><div class="chip dead"><b>Brodalumab</b><i>anti-IL-17RA · stopped</i></div></div>
+      <div class="cell"><div class="chip"><b>Tulisokibart</b><i>Merck · met primary, Jun 2026</i></div><div class="chip"><b>Duvakitug</b><i>Teva/Sanofi</i></div><div class="chip"><b>Afimkibart</b><i>Roche</i></div></div>
+      <div class="cell"><div class="chip"><b>Mirikizumab</b><i>Lilly</i></div><div class="chip"><b>Risankizumab</b><i>AbbVie · Crohn's SC induction Ph3 AFFIRM: 55% vs 29.6% remission, filed</i></div><div class="chip"><b>Guselkumab</b><i>J&amp;J</i></div></div>
+
+      <div class="rowhead">Oral small molecules<span>JAK, S1P, IL-23R, PDE4, SIK, TYK2</span></div>
+      <div class="cell"><div class="chip"><b>SIT-033</b><i>Sitryx · SIK2, UC · lead PKM2 drug positive Ph1b in atopic dermatitis · BI deal &gt;$500M</i></div><div class="chip flag"><b>Coultreon SIK</b><i>$125M A · IBD focus unconfirmed</i></div></div>
+      <div class="cell"><div class="chip flag"><b>OPM-101</b><i>Oncodesign (Euronext ALOPM) · RIPK2 kinase · healthy-volunteer Ph1 only · IBD awaiting partner · €2.9M cash</i></div></div>
+      <div class="cell"><div class="chip"><b>AC-101</b><i>Accro Bioscience (Suzhou) · RIPK2 · randomised Ph2b dosing since Sep 2026 · $50M Series C, OrbiMed</i></div><div class="chip"><b>OD-001</b><i>Odyssey (Nasdaq ODTX) · RIPK2 scaffolding · open-label Ph2a UC: 27% remission · randomised Ph2b H2 2027</i></div><div class="chip"><b>cAMPfield lead</b><i>oral PDE4 · $180M A</i></div><div class="chip"><b>Tamuzimod</b><i>Ventyx · S1P1</i></div><div class="chip flag"><b>AZD7798</b><i>AstraZeneca · CD</i></div><div class="chip flag"><b>Mufemilast</b><i>oral PDE4 · 24-wk data · sponsor unidentified</i></div><div class="chip dead"><b>Deucravacitinib</b><i>BMS · TYK2 · failed UC + CD</i></div></div>
+      <div class="cell"><div class="chip"><b>Icotrokinra</b><i>J&amp;J · oral IL-23R peptide · NEJM Oct 2026</i></div></div>
+      <div class="cell"><div class="chip"><b>Upadacitinib</b><i>AbbVie · JAK1</i></div><div class="chip"><b>Etrasimod</b><i>Pfizer · S1P</i></div></div>
+
+      <div class="rowhead">Cell trafficking<span>α4β7 integrin</span></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"><div class="chip"><b>MORF-057</b><i>oral α4β7 · EMERALD-2</i></div><div class="chip"><b>SPY001</b><i>Spyre · half-life extended</i></div></div>
+      <div class="cell"></div>
+      <div class="cell"><div class="chip"><b>Vedolizumab</b><i>Takeda</i></div></div>
+
+      <div class="rowhead">RNA &amp; novel mechanism<span>miR-124</span></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"><div class="chip"><b>Abivax — obefazimod</b><i>miR-124 inducer · NDA late Q4 2026 · CD Ph2b mid-2027</i></div></div>
+      <div class="cell"></div>
+
+      <div class="rowhead">Combination &amp; dual-targeted<span>two mechanisms, one injection</span></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"><div class="chip"><b>JNJ-4804</b><i>J&amp;J · guselkumab + golimumab · DUET, DDW 2026</i></div></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+
+      <div class="rowhead">Reprogramming — upstream<span>depleting the driver cell</span></div>
+      <div class="cell"><div class="chip flag"><b>Anti-IL-10 subgroup</b><i>Oxford · 3.5% of IBD · no company</i></div><div class="chip flag"><b>REA-001</b><i>Re-Aim · depletes pathogenic T cells · £7M seed, Syncona/OSE · IBD not named</i></div></div>
+      <div class="cell"><div class="chip"><b>Autologous CAR-T</b><i>Hebei Senlang · refractory UC</i></div></div>
+      <div class="cell"><div class="chip flag"><b>CD19 CAR-T</b><i>Erlangen · case reports only</i></div></div>
+      <div class="cell"></div>
+      <div class="cell"><div class="chip dead"><b>Rituximab</b><i>failed RCT, 2011 · n=24</i></div></div>
+
+      <div class="rowhead">Reprogramming — downstream<span>macrophage, myeloid, Treg</span></div>
+      <div class="cell"><div class="chip"><b>ETS2 → MEK</b><i>Crick + LifeArc · no company</i></div><div class="chip"><b>Liberate Bio</b><i>in vivo · $31M seed</i></div><div class="chip"><b>IL23R CAR-Treg</b><i>academic</i></div><div class="chip"><b>QEL-003</b><i>Quell + AstraZeneca · Th17-activated nTreg · IND-enabling</i></div></div>
+      <div class="cell"><div class="chip"><b>LMT503</b><i>Lmito · macrophage metabolism · Ph1</i></div><div class="chip"><b>TRX103</b><i>Tr1X · allogeneic Tr1 Treg · refractory CD · Fast Track + Orphan</i></div><div class="chip"><b>Expanded Tregs</b><i>Erlangen · NCT04691232</i></div></div>
+      <div class="cell"><div class="chip dead"><b>Selnoflast</b><i>Roche · NLRP3 · no efficacy</i></div></div>
+      <div class="cell"></div>
+      <div class="cell"><div class="chip dead"><b>Darvadstrocel</b><i>Takeda · withdrawn</i></div></div>
+
+      <div class="rowhead">Microbiome<span>live biotherapeutics</span></div>
+      <div class="cell"></div>
+      <div class="cell"><div class="chip"><b>MB310</b><i>Microbiotica · 8-strain consortium · Ph1b: 63% vs 30% remission, n=29, mild-moderate UC · Ph2/3 next</i></div></div>
+      <div class="cell"><div class="chip"><b>MH002</b><i>MRM Health · STARFISH-UC n=204</i></div><div class="chip flag"><b>AVB-114</b><i>perianal CD fistula</i></div></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+
+      <div class="rowhead">Barrier repair<span>restoring the epithelium</span></div>
+      <div class="cell"><div class="chip"><b>Thelior Bio</b><i>Oxford spinout 2025 · Simmons &amp; Chen · OSE seed</i></div></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+
+      <div class="rowhead">Stromal &amp; fibroblast<span>the cell nobody drugs yet</span></div>
+      <div class="cell"><div class="chip"><b>M402</b><i>Mestag · stromal inhibitory receptor agonist · $40M, Forbion/GV/JJDC</i></div><div class="chip dead"><b>OSM / OSMR</b><i>biomarker-validated target · Genentech vixarelimab Ph2 UC stopped for futility: remission 11.1% vs 11.5% placebo</i></div></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+
+      <div class="rowhead">Fibrosis &amp; stricture<span>a different endpoint entirely</span></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"><div class="chip"><b>RXC008</b><i>Redx → Fibrx · GI-targeted ROCK · ROCKETEER Q4 2026 · FDA Fast Track</i></div></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+    </div>
+  </div>
+  <div class="legend">
+    <span><i class="swatch" style="background:var(--accent)"></i>Active programme</span>
+    <span><i class="swatch" style="background:var(--warn)"></i>Unverified or incomplete record</span>
+    <span><i class="swatch" style="background:var(--dead)"></i>Failed, withdrawn or negative</span>
+  </div>
+  <p style="margin-top:.85rem;font-size:.8rem;line-height:1.45;color:var(--ink-2);max-width:72ch"><b>Outside IBD — read-across for the stromal row.</b> No IL-11 drug is in IBD trials. The earliest efficacy readout for the IL-11 class is Boehringer Ingelheim's anti-IL-11 BI 765423 (from Enleofen), in a Phase 2 lung-function study in idiopathic pulmonary fibrosis (<a href="https://clinicaltrials.gov/study/NCT07036523">NCT07036523</a>, n=81, primary completion March 2027).</p>
+</section>
+
+<!-- MAP2 START -->
+<section id="map2">
+  <p class="eyebrow">A3 · Registry view</p>
+  <h2>What a systematic trial-registry sweep adds</h2>
+  <p class="intro">Map 1 was built top-down, class by class, from known mechanisms and owner input. Map 2 is built bottom-up: every industry-sponsored interventional trial in ulcerative colitis, Crohn's disease or IBD on ClinicalTrials.gov, Phase 1–3, started since January 2023 — 286 trials — collapsed to one chip per programme, plus three 22 October additions a registry cannot show. Chips marked <em class="b1">Map 1</em> were already on the map above; <em class="bn">New</em> chips were not. Each registry chip links to its trial record and shows its NCT number, which you can also search on clinicaltrials.gov.</p>
+  <div class="stats">
+    <div class="stat"><span class="v">104</span><span class="k">Programmes in the registry view</span><span class="n">from 286 trials, pulled 22 Oct 2026</span></div>
+    <div class="stat"><span class="v">20</span><span class="k">Already on Map 1</span><span class="n">matched by drug name or code</span></div>
+    <div class="stat"><span class="v">84</span><span class="k">New to the map</span><span class="n">32 with mechanism not disclosed</span></div>
+    <div class="stat"><span class="v">12</span><span class="k">Stopped or withdrawn</span><span class="n">registry status, red</span></div>
+  </div>
+  <div class="scroll"><div class="map">
+  <div class="colhead">Class</div><div class="colhead">Preclinical</div><div class="colhead">Phase 1</div><div class="colhead">Phase 2</div><div class="colhead">Phase 3</div><div class="colhead">Approved</div><div class="rowhead">IL-23 pathway<span>antibodies and the oral IL-23R peptide</span></div><div class="cell"></div><div class="cell"></div><div class="cell"><a class="chip m1" href="https://clinicaltrials.gov/study/NCT07652294"><b>SPY001-003</b><em class="b1">Map 1</em><i>Spyre Therapeutics, Inc. · NCT07652294</i></a></div><div class="cell"><a class="chip m1" href="https://clinicaltrials.gov/study/NCT06049017"><b>Icotrokinra</b><em class="b1">Map 1</em><i>Janssen Research &amp; Development, LLC · NCT06049017</i></a></div><div class="cell"><a class="chip m1" href="https://clinicaltrials.gov/study/NCT06260163"><b>Guselkumab</b><em class="b1">Map 1</em><i>Janssen Research &amp; Development, LLC · NCT06260163</i></a><a class="chip m1" href="https://clinicaltrials.gov/study/NCT06598943"><b>Eltrekibart ± mirikizumab</b><em class="b1">Map 1</em><i>Eli Lilly and Company · anti-ELR+ CXC chemokine antibody, alone or with anti-IL-23p19 · Ph2 UC · NCT06598943</i></a><a class="chip m1" href="https://clinicaltrials.gov/study/NCT06880744"><b>Risankizumab</b><em class="b1">Map 1</em><i>AbbVie · anti-IL-23p19 · Ph3b head-to-head vs vedolizumab in UC · NCT06880744</i></a></div><div class="rowhead">TL1A / DR3<span>the crowded race</span></div><div class="cell"></div><div class="cell"><a class="chip m1" href="https://clinicaltrials.gov/study/NCT07713485"><b>XmAb412 (IL-23 × TL1A)</b><em class="b1">Map 1</em><i>Xencor, Inc. · NCT07713485</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07526519"><b>TL-003</b><em class="bn">New</em><i>TrueLab Biopharmaceutical Co., Ltd · NCT07526519</i></a><a class="chip dead new" href="https://clinicaltrials.gov/study/NCT07029971"><b>BB-TL1A-VIAL-HLE</b><em class="bn">New</em><i>Vial Australia Pty Ltd · anti-TL1A, half-life extended (registry) — terminated · stopped · NCT07029971</i></a></div><div class="cell"><a class="chip new" href="https://clinicaltrials.gov/study/NCT07078994"><b>BCD-261</b><em class="bn">New</em><i>Biocad · NCT07078994</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07753850"><b>SL-325</b><em class="bn">New</em><i>Shattuck Labs, Inc. · DR3 (TL1A receptor) antagonist antibody† · NCT07753850</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT06619990"><b>XmAb942</b><em class="bn">New</em><i>Xencor, Inc. · anti-TL1A, half-life extended† · NCT06619990</i></a></div><div class="cell"><a class="chip m1" href="https://clinicaltrials.gov/study/NCT06819891"><b>Afimkibart</b><em class="b1">Map 1</em><i>Hoffmann-La Roche · NCT06819891</i></a><a class="chip m1" href="https://clinicaltrials.gov/study/NCT07184944"><b>Duvakitug</b><em class="b1">Map 1</em><i>Sanofi · NCT07184944</i></a><a class="chip m1" href="https://clinicaltrials.gov/study/NCT06829225"><b>Tulisokibart</b><em class="b1">Map 1</em><i>Merck Sharp &amp; Dohme LLC · NCT06829225</i></a></div><div class="cell"></div><div class="rowhead">Other cytokine &amp; co-stimulation<span>TNF, OX40L, CD30L, IL-1/18/25, chemokines, OSMR</span></div><div class="cell"></div><div class="cell"><a class="chip new" href="https://clinicaltrials.gov/study/NCT07747467"><b>Aletekitug</b><em class="bn">New</em><i>GlaxoSmithKline · anti-IL-18 (registry) · NCT07747467</i></a></div><div class="cell"><a class="chip new" href="https://clinicaltrials.gov/study/NCT06867094"><b>Balinatunfib</b><em class="bn">New</em><i>Sanofi · oral small-molecule TNFR1 signalling inhibitor† · NCT06867094</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT06975722"><b>Brivekimig</b><em class="bn">New</em><i>Sanofi · TNF × OX40L bispecific nanobody† · NCT06975722</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07368972"><b>DISC-0974</b><em class="bn">New</em><i>Disc Medicine, Inc · anti-hemojuvelin, anaemia of inflammation — supportive, not disease-mo · NCT07368972</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT05731128"><b>Dupilumab</b><em class="bn">New</em><i>Sanofi · NCT05731128</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07463183"><b>MK-8690</b><em class="bn">New</em><i>Merck Sharp &amp; Dohme LLC · anti-CD30L antibody (PRA052)† · NCT07463183</i></a><a class="chip dead new" href="https://clinicaltrials.gov/study/NCT06137183"><b>Vixarelimab</b><em class="bn">New</em><i>Genentech, Inc. · anti-OSMR antibody · Ph2 UC terminated for futility · stopped · NCT06137183</i></a></div><div class="cell"></div><div class="cell"></div><div class="rowhead">Oral small molecules<span>JAK/TYK2, PDE4, kinases, nuclear receptors, miR-124</span></div><div class="cell"></div><div class="cell"><a class="chip m1" href="https://clinicaltrials.gov/study/NCT05659953"><b>LMT503</b><em class="b1">Map 1</em><i>Lmito Therapeutics Inc. · NCT05659953</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT06754891"><b>TQH3906</b><em class="bn">New</em><i>Chia Tai Tianqing Pharmaceutical Group Nanjing Shunxin Pharmaceutical Co., Ltd. · NCT06754891</i></a></div><div class="cell"><a class="chip new" href="https://clinicaltrials.gov/study/NCT07035041"><b>D-2570</b><em class="bn">New</em><i>InventisBio Co., Ltd · TYK2 inhibitor† · NCT07035041</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07265570"><b>ISM5411</b><em class="bn">New</em><i>InSilico Medicine Hong Kong Limited · gut-restricted PHD inhibitor† · NCT07265570</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT05940558"><b>MBF-118</b><em class="bn">New</em><i>Medibiofarma S.L. · PPARγ partial agonist (registry) · NCT05940558</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07428096"><b>PALI-2108</b><em class="bn">New</em><i>Palisade Bio · gut-activated PDE4 inhibitor prodrug (registry) · NCT07428096</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT06029972"><b>Tilpisertib fosmecarbil</b><em class="bn">New</em><i>Gilead Sciences · TPL2 (MAP3K8) inhibitor† · NCT06029972</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT06254950"><b>Zasocitinib</b><em class="bn">New</em><i>Takeda · oral TYK2 inhibitor† · NCT06254950</i></a><a class="chip dead new" href="https://clinicaltrials.gov/study/NCT05688852"><b>VTX958</b><em class="bn">New</em><i>Ventyx Biosciences, Inc · TYK2 inhibitor — terminated† · stopped · NCT05688852</i></a></div><div class="cell"><a class="chip m1" href="https://clinicaltrials.gov/study/NCT05507216"><b>Obefazimod</b><em class="b1">Map 1</em><i>Abivax S.A. · NCT05507216</i></a></div><div class="cell"><a class="chip m1" href="https://clinicaltrials.gov/study/NCT06332534"><b>Upadacitinib</b><em class="b1">Map 1</em><i>AbbVie · NCT06332534</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT06865417"><b>Filgotinib</b><em class="bn">New</em><i>Alfasigma S.p.A. · NCT06865417</i></a></div><div class="rowhead">Cell trafficking<span>α4β7, S1P, GPR183</span></div><div class="cell"></div><div class="cell"></div><div class="cell"><a class="chip new" href="https://clinicaltrials.gov/study/NCT06290934"><b>Emvistegrast</b><em class="bn">New</em><i>Gilead Sciences · oral α4β7 integrin inhibitor† · NCT06290934</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07535489"><b>IPG11406</b><em class="bn">New</em><i>Nanjing Immunophage Biotech Co., Ltd · GPR183 targeting (registry) · NCT07535489</i></a></div><div class="cell"><a class="chip new" href="https://clinicaltrials.gov/study/NCT07686081"><b>Ponesimod</b><em class="bn">New</em><i>Vanda Pharmaceuticals · NCT07686081</i></a><a class="chip dead new" href="https://clinicaltrials.gov/study/NCT05470985"><b>Ozanimod (Crohn&#x27;s)</b><em class="bn">New</em><i>Bristol-Myers Squibb · stopped · NCT05470985</i></a></div><div class="cell"><a class="chip m1" href="https://clinicaltrials.gov/study/NCT07470879"><b>Etrasimod</b><em class="b1">Map 1</em><i>Pfizer · NCT07470879</i></a><a class="chip m1" href="https://clinicaltrials.gov/study/NCT06206811"><b>Vedolizumab</b><em class="b1">Map 1</em><i>Alvotech Swiss AG · NCT06206811</i></a></div><div class="rowhead">Innate sensing<span>RIPK1/2, NLRX1, AHR, IL-1/18</span></div><div class="cell"><div class="chip new"><b>AT177</b><em class="bn">New</em><i>Adial (Azora) · colon-targeted AHR agonist, indirubin prodrug</i></div><div class="chip new"><b>BI 706039</b><em class="bn">New</em><i>Boehringer · RIPK2 inhibitor, mouse</i></div></div><div class="cell"><a class="chip new" href="https://clinicaltrials.gov/study/NCT07869225"><b>EQ504</b><em class="bn">New</em><i>Equillium · NCT07869225</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07466940"><b>SM17</b><em class="bn">New</em><i>SinoMab BioScience Ltd · anti-IL-25 receptor (IL-17RB) antibody† · NCT07466940</i></a><div class="chip dead new"><b>GSK2983559</b><em class="bn">New</em><i>GSK · RIPK2 inhibitor, stopped on tox · stopped</i></div></div><div class="cell"><a class="chip new" href="https://clinicaltrials.gov/study/NCT06850727"><b>OD-001 (OD-07656)</b><em class="bn">New</em><i>Odyssey Therapeutics, Inc. · RIPK2 inhibitor, then vedolizumab · Ph2 UC · NCT06850727</i></a><a class="chip m1" href="https://clinicaltrials.gov/study/NCT07755241"><b>AC-101</b><em class="b1">Map 1</em><i>Accro Bioscience (Suzhou) Limited · NCT07755241</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT05570006"><b>ABBV-668</b><em class="bn">New</em><i>AbbVie · RIPK1 inhibitor† · NCT05570006</i></a><a class="chip dead new" href="https://clinicaltrials.gov/study/NCT05785715"><b>NX-13 (NLRX1 agonist)</b><em class="bn">New</em><i>AbbVie · stopped · NCT05785715</i></a></div><div class="cell"></div><div class="cell"></div><div class="rowhead">Tolerance &amp; checkpoint agonists<span>PD-1 / PSGL-1 agonism, antigen-specific, IL-2</span></div><div class="cell"></div><div class="cell"><a class="chip new" href="https://clinicaltrials.gov/study/NCT07423000"><b>PVT401</b><em class="bn">New</em><i>Parvus Therapeutics, Inc. · NCT07423000</i></a></div><div class="cell"><a class="chip new" href="https://clinicaltrials.gov/study/NCT06109441"><b>ALTB-268</b><em class="bn">New</em><i>AltruBio Inc. · PSGL-1-targeting antibody (T-cell checkpoint agonist)† · NCT06109441</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT06127043"><b>Rosnilimab</b><em class="bn">New</em><i>AnaptysBio, Inc. · PD-1 agonist antibody (registry) · NCT06127043</i></a><a class="chip dead new" href="https://clinicaltrials.gov/study/NCT05672199"><b>Efavaleukin alfa</b><em class="bn">New</em><i>Amgen · stopped · NCT05672199</i></a></div><div class="cell"></div><div class="cell"></div><div class="rowhead">Cell &amp; vesicle therapies<span>CAR-T, Treg, MSC, extracellular vesicles</span></div><div class="cell"></div><div class="cell"><a class="chip new" href="https://clinicaltrials.gov/study/NCT07822087"><b>Autologous intestinal organoid</b><em class="bn">New</em><i>ORGANOIDSCIENCES LTD. · NCT07822087</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT05602116"><b>Cell2Cure MSC</b><em class="bn">New</em><i>Cell to Cure ApS · NCT05602116</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT06429241"><b>Topcel-KH MSC</b><em class="bn">New</em><i>Jiangsu Topcel-KH Pharmaceutical Co., Ltd. · NCT06429241</i></a></div><div class="cell"><a class="chip m1" href="https://clinicaltrials.gov/study/NCT06721962"><b>TRX103</b><em class="b1">Map 1</em><i>Tr1X, Inc. · NCT06721962</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT06918808"><b>DB-3Q</b><em class="bn">New</em><i>Direct Biologics, LLC · extracellular-vesicle product† · NCT06918808</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07077746"><b>HB-adMSC</b><em class="bn">New</em><i>Hope Biosciences Research Foundation · NCT07077746</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07544160"><b>ICG318 (BCMA × CD19 CAR-T)</b><em class="bn">New</em><i>iCell Gene Therapeutics · BCMA × CD19 compound CAR-T (registry) — plasma-cell + B-cell depletion · NCT07544160</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07010926"><b>L2-01 adipose MSC</b><em class="bn">New</em><i>EL3 Bio, LLC. · NCT07010926</i></a><a class="chip dead new" href="https://clinicaltrials.gov/study/NCT05130983"><b>ExoFlo</b><em class="bn">New</em><i>Direct Biologics, LLC · bone-marrow MSC-derived extracellular vesicles† · stopped · NCT05130983</i></a></div><div class="cell"><a class="chip new" href="https://clinicaltrials.gov/study/NCT06925594"><b>TH-SC01 cells</b><em class="bn">New</em><i>Jiangsu Topcel-KH Pharmaceutical Co., Ltd. · NCT06925594</i></a></div><div class="cell"></div><div class="rowhead">Microbiome &amp; barrier<span>consortia, single strains, gut-restricted biologics</span></div><div class="cell"></div><div class="cell"><a class="chip m1" href="https://clinicaltrials.gov/study/NCT06582264"><b>MB310</b><em class="b1">Map 1</em><i>Microbiotica Ltd · NCT06582264</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT06749795"><b>LIV001</b><em class="bn">New</em><i>Liveome Inc. · NCT06749795</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07791888"><b>R-3750</b><em class="bn">New</em><i>Rise Therapeutics LLC · NCT07791888</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT06080048"><b>SOR102</b><em class="bn">New</em><i>Sorriso Pharmaceuticals, Inc. · oral gut-restricted anti-TNF/IL-23 domain antibody† · NCT06080048</i></a><a class="chip dead new" href="https://clinicaltrials.gov/study/NCT05542355"><b>EXL01</b><em class="bn">New</em><i>Exeliom Biosciences · Faecalibacterium prausnitzii strain — terminated (registry) · stopped · NCT05542355</i></a><a class="chip dead new" href="https://clinicaltrials.gov/study/NCT06260267"><b>Ferring microbiota product</b><em class="bn">New</em><i>Ferring Pharmaceuticals · stopped · NCT06260267</i></a></div><div class="cell"><a class="chip m1" href="https://clinicaltrials.gov/study/NCT07296315"><b>MH002</b><em class="b1">Map 1</em><i>MRM Health NV · NCT07296315</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT06699121"><b>LB-P8</b><em class="bn">New</em><i>LISCure Biosciences · NCT06699121</i></a><a class="chip dead new" href="https://clinicaltrials.gov/study/NCT05370885"><b>VE202</b><em class="bn">New</em><i>Vedanta Biosciences, Inc. · defined bacterial consortium — terminated · stopped · NCT05370885</i></a></div><div class="cell"></div><div class="cell"></div><div class="rowhead">Fibrosis &amp; stricture<span>ROCK, ALK5</span></div><div class="cell"></div><div class="cell"></div><div class="cell"><a class="chip m1" href="https://clinicaltrials.gov/study/NCT07832435"><b>RXC008</b><em class="b1">Map 1</em><i>Redx Pharma Ltd · NCT07832435</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07683325"><b>Ontunisertib</b><em class="bn">New</em><i>Agomab Spain S.L.U. · gut-restricted ALK5 / TGF-βRI inhibitor, fibrostenotic CD† · NCT07683325</i></a></div><div class="cell"></div><div class="cell"></div><div class="rowhead">Mechanism not disclosed<span>coded assets, mostly Chinese sponsors</span></div><div class="cell"></div><div class="cell"><a class="chip new" href="https://clinicaltrials.gov/study/NCT05743010"><b>APL-1401</b><em class="bn">New</em><i>Jiangsu Yahong Meditech Co., Ltd aka Asieris · NCT05743010</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07819799"><b>ATTO-1091</b><em class="bn">New</em><i>Attovia Therapeutics Inc · NCT07819799</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07632573"><b>BDHK-2009</b><em class="bn">New</em><i>Benethera (Shaoxing) Biotechnology Co., Ltd. · NCT07632573</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT06681181"><b>GSK4528287</b><em class="bn">New</em><i>GlaxoSmithKline · NCT06681181</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07373457"><b>HW201877</b><em class="bn">New</em><i>Wuhan Humanwell Innovative Drug Research and Development Center Limited Company · NCT07373457</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07768254"><b>HX15001</b><em class="bn">New</em><i>Helixon Biotechnology (Suzhou) Co., Ltd · NCT07768254</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07505030"><b>LYNC-101</b><em class="bn">New</em><i>LyncBio Therapeutics Co., Ltd. · NCT07505030</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07749768"><b>ONO-6414</b><em class="bn">New</em><i>Ono Pharmaceutical Co., Ltd. · NCT07749768</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07760077"><b>QLS1510</b><em class="bn">New</em><i>Shanghai Qilu Pharmaceutical Research and Development Center LTD · NCT07760077</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07758101"><b>SHR-7590</b><em class="bn">New</em><i>Guangdong Hengrui Pharmaceutical Co., Ltd · NCT07758101</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07834515"><b>TP317</b><em class="bn">New</em><i>Thetis Pharmaceuticals LLC · NCT07834515</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT06055023"><b>ZL-82</b><em class="bn">New</em><i>Chengdu Zenitar Biomedical Technology Co., Ltd · NCT06055023</i></a><a class="chip dead new" href="https://clinicaltrials.gov/study/NCT05999708"><b>GSK4381406</b><em class="bn">New</em><i>GlaxoSmithKline · stopped · NCT05999708</i></a><a class="chip dead new" href="https://clinicaltrials.gov/study/NCT06681389"><b>NP-201</b><em class="bn">New</em><i>NIBEC Co., Ltd. · stopped · NCT06681389</i></a></div><div class="cell"><a class="chip m1" href="https://clinicaltrials.gov/study/NCT06450197"><b>AZD7798</b><em class="b1">Map 1</em><i>AstraZeneca · NCT06450197</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07507513"><b>627</b><em class="bn">New</em><i>Sunshine Guojian Pharmaceutical (Shanghai) Co., Ltd. · NCT07507513</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT05807971"><b>ATH-063</b><em class="bn">New</em><i>Athos Therapeutics Inc · NCT05807971</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT06636656"><b>BI 3032950</b><em class="bn">New</em><i>Boehringer Ingelheim · NCT06636656</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT05907330"><b>CU104</b><em class="bn">New</em><i>Curacle Co., Ltd. · NCT05907330</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT06627556"><b>H021</b><em class="bn">New</em><i>Jiangsu Carephar Pharmaceutical Co., Ltd. · NCT06627556</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07760831"><b>HRS-7085</b><em class="bn">New</em><i>Jiangsu HengRui Medicine Co., Ltd. · NCT07760831</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07335055"><b>HSK47388</b><em class="bn">New</em><i>Haisco Pharmaceutical Group Co., Ltd. · NCT07335055</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07692165"><b>INT-210</b><em class="bn">New</em><i>Innatus Therapeutics (Shanghai) Co., Ltd. · NCT07692165</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT05831670"><b>KSP-0243</b><em class="bn">New</em><i>Kissei Pharmaceutical Co., Ltd. · NCT05831670</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07374471"><b>MB-001</b><em class="bn">New</em><i>Mage Biologics · NCT07374471</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07113522"><b>MT-501</b><em class="bn">New</em><i>Mirador Therapeutics, Inc. · NCT07113522</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07747155"><b>PTT-621</b><em class="bn">New</em><i>Pyrotech Therapeutics, Inc. · NCT07747155</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT06979336"><b>RO7837195</b><em class="bn">New</em><i>Genentech, Inc. · NCT06979336</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07232576"><b>SHR-1139</b><em class="bn">New</em><i>Guangdong Hengrui Pharmaceutical Co., Ltd · NCT07232576</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT05770609"><b>SPH3127</b><em class="bn">New</em><i>Shanghai Pharmaceuticals Holding Co., Ltd · NCT05770609</i></a><a class="chip new" href="https://clinicaltrials.gov/study/NCT07871669"><b>TRA16</b><em class="bn">New</em><i>Wuhan Kangfude Urolithiasis Research Institute Co., Ltd. · NCT07871669</i></a></div><div class="cell"><a class="chip new" href="https://clinicaltrials.gov/study/NCT07650942"><b>Hemay005</b><em class="bn">New</em><i>Ganzhou Hemay Pharmaceutical Co., Ltd · NCT07650942</i></a></div><div class="cell"></div>
+  </div></div>
+  <div class="legend">
+    <span><i class="swatch" style="background:var(--accent)"></i>On Map 1</span>
+    <span><i class="swatch" style="border:1.5px dashed var(--accent);background:transparent"></i>New from the sweep</span>
+    <span><i class="swatch" style="background:var(--dead)"></i>Stopped or withdrawn</span>
+    <span>† mechanism from background knowledge, not yet verified</span>
+  </div>
+  <div class="finds" style="margin-top:1.5rem">
+    <div class="find"><span class="tag">The headline the sweep found</span><h3>A big-pharma OSMR antibody already failed in UC</h3><p>Genentech's vixarelimab Phase 2 in moderate-to-severe UC (Moonglow, NCT06137183) was terminated after a futility analysis judged it unlikely to meet its primary endpoint. Vixarelimab targets OSMR, the receptor for oncostatin M; the best biomarker-validated stromal cytokine axis has been tried and has not worked in UC (remission 11.1% vs 11.5% placebo).</p></div>
+    <div class="find"><span class="tag">What a top-down map misses</span><h3>Whole mechanism classes were invisible until the registry pull</h3><p>Checkpoint agonists (rosnilimab, ALTB-268), a BCMA × CD19 CAR-T aimed at refractory IBD, a second fibrostenotic-Crohn's asset (ontunisertib), and a TNF × OX40L bispecific (brivekimig) all sit in registries and were absent from Map 1. Roughly a third of the new chips carry only a company code with no disclosed mechanism.</p></div>
+  </div>
+  <p class="figcap">Limits: academic-sponsored trials are excluded; preclinical companies are invisible to a registry; trials started before 2023 are not in this pull; registry status can lag company news. Programme grouping and class assignment were automated and spot-checked, not hand-verified for every row.</p>
+</section>
+<!-- MAP2 END -->
+
+<section id="bench">
+  <p class="eyebrow">A4 · Benchmarks</p>
+  <h2>Detailed efficacy benchmarking</h2>
+  <p class="intro">Induction remission in moderate-to-severe ulcerative colitis now runs 21–33% absolute, roughly 11–29 points over placebo. The numbers below are the reference points every new asset is measured against — and the first thing a partner will ask about.</p>
+  <div class="stats">
+    <div class="stat"><span class="v">29.4<span style="font-size:1rem">pts</span></span><span class="k">Best induction delta: upadacitinib, U-ACCOMPLISH</span><span class="n">33.5% vs 4.1% placebo</span></div>
+    <div class="stat"><span class="v">40.3<span style="font-size:1rem">pts</span></span><span class="k">Obefazimod maintenance delta at week 44</span><span class="n">51.3% vs 10.4%; company-reported, placebo-adjusted (raw difference 40.9)</span></div>
+    <div class="stat"><span class="v">1–15<span style="font-size:1rem">%</span></span><span class="k">Placebo remission range across trials</span><span class="n">makes raw deltas unreliable</span></div>
+    <div class="stat"><span class="v">100+</span><span class="k">Investigational agents in Ph2–3 for UC alone</span><span class="n">Frontiers review, 2026</span></div>
+  </div>
+</section>
+
+<section id="benchtable">
+  <p class="eyebrow">A4 · Benchmark table</p>
+  <h2>Every efficacy number used in the analysis</h2>
+  <p class="intro">Clinical remission unless stated, in percent. The investment brief plots the UC induction rows; this table adds maintenance, Crohn's disease, combination and open-label data that cannot be shown on the same axis.</p>
+  <div class="scroll"><table class="bench" style="min-width:900px"><thead><tr><th>Setting</th><th>Drug</th><th>Trial</th><th>Drug %</th><th>Placebo %</th><th>Difference (points)</th><th>Timepoint</th><th>Source</th></tr></thead><tbody><tr><td>UC induction</td><td>Upadacitinib</td><td>U-ACCOMPLISH (Ph3)</td><td class="num">33.5</td><td class="num">4.1</td><td class="num">+29.4</td><td>Week 8</td><td><a href="https://www.gastrojournal.org/article/S0016-5085(24)05480-5/fulltext">AGA 2024</a></td></tr><tr><td>UC induction</td><td>Upadacitinib</td><td>U-ACHIEVE (Ph3)</td><td class="num">26.1</td><td class="num">4.8</td><td class="num">+21.3</td><td>Week 8</td><td><a href="https://www.gastrojournal.org/article/S0016-5085(24)05480-5/fulltext">AGA 2024</a></td></tr><tr><td>UC induction</td><td>Tamuzimod (VTX002)</td><td>Ph2, 60 mg</td><td class="num">28</td><td class="num">11</td><td class="num">+17</td><td>Week 13</td><td><a href="https://www.biospace.com/ventyx-biosciences-announces-positive-results-from-the-phase-2-trial-of-vtx002-in-patients-with-moderate-to-severely-active-ulcerative-colitis">Ventyx</a></td></tr><tr><td>UC induction</td><td>Tulisokibart</td><td>ARTEMIS-UC (Ph2), cohort 1</td><td class="num">26</td><td class="num">1</td><td class="num">+25</td><td>Week 12</td><td><a href="https://clinicaltrials.gov/study/NCT04996797">Sands et al., NEJM 2024;391:1119–29 (NCT04996797)</a></td></tr><tr><td>UC induction</td><td>Risankizumab</td><td>Ph3</td><td class="num">21</td><td class="num">6</td><td class="num">+15</td><td>Week 12</td><td><a href="https://www.gastrojournal.org/article/S0016-5085(24)05480-5/fulltext">AGA 2024</a></td></tr><tr><td>UC induction</td><td>Guselkumab</td><td>Ph3</td><td class="num">23</td><td class="num">8</td><td class="num">+15</td><td>Week 12</td><td><a href="https://www.gastrojournal.org/article/S0016-5085(24)05480-5/fulltext">AGA 2024</a></td></tr><tr><td>UC induction</td><td>Obefazimod</td><td>ABTECT-2 (Ph3)</td><td class="num">27.6</td><td class="num">14.1</td><td class="num">+13.5</td><td>Week 8</td><td><a href="https://xtalks.com/obefazimod-phase-iii-success-pushes-abivax-stock-to-record-highs-4349/">Abivax / Xtalks</a></td></tr><tr><td>UC induction</td><td>Obefazimod</td><td>ABTECT-1 (Ph3)</td><td class="num">28.6</td><td class="num">15.4</td><td class="num">+13.2</td><td>Week 8</td><td><a href="https://xtalks.com/obefazimod-phase-iii-success-pushes-abivax-stock-to-record-highs-4349/">Abivax / Xtalks</a></td></tr><tr><td>UC induction</td><td>Mirikizumab</td><td>Pooled (Ph3)</td><td class="num">24.2</td><td class="num">13.3</td><td class="num">+10.9</td><td>Sources conflict*</td><td><a href="https://www.cghjournal.org/article/S1542-3565(24)00767-5/fulltext">CGH network meta-analysis</a></td></tr><tr><td>UC induction</td><td>Icotrokinra (oral)</td><td>ANTHEM-UC (Ph2b), response</td><td class="num">63.5 (response)</td><td class="num">27 (response)</td><td class="num">+36.5 (response)</td><td>Week 12</td><td><a href="https://www.nejm.org/doi/full/10.1056/NEJMoa2604435">NEJM 2026</a></td></tr><tr><td>UC maintenance</td><td>Obefazimod</td><td>ABTECT maintenance (Ph3), 50 mg</td><td class="num">51.3</td><td class="num">10.4</td><td class="num">+40.3 (adjusted)</td><td>Week 44</td><td><a href="https://ir.abivax.com/news-releases/news-release-details/abivax-announces-landmark-phase-3-abtect-maintenance-trial">Abivax</a></td></tr><tr><td>UC, longer term</td><td>Etrasimod</td><td>Ph3</td><td class="num">32</td><td class="num">7</td><td class="num">+25</td><td>Within 52 weeks</td><td><a href="https://www.gastrojournal.org/article/S0016-5085(24)05480-5/fulltext">AGA 2024</a></td></tr><tr><td>Crohn's induction</td><td>Risankizumab SC</td><td>AFFIRM (Ph3), CDAI remission</td><td class="num">55</td><td class="num">29.6</td><td class="num">+25.4</td><td>Week 12</td><td><a href="https://news.abbvie.com/2026-03-02-AbbVie-Announces-Positive-Topline-Results-from-Phase-3-AFFIRM-Study-Evaluating-SKYRIZI-R-Risankizumab-Subcutaneous-Induction-in-Patients-with-Crohns-Disease">AbbVie</a></td></tr><tr><td>Crohn's, combination</td><td>Guselkumab + golimumab (JNJ-4804)</td><td>DUET-CD (Ph2b), high dose</td><td class="num">50.8</td><td class="num">no placebo; 42.5 guselkumab, 25.4 golimumab</td><td class="num">—</td><td>Week 48</td><td><a href="https://www.jnj.com/media-center/press-releases/results-of-novel-clinical-study-of-guselkumab-and-golimumab-combination-therapy-show-adults-with-moderately-to-severely-active-ulcerative-colitis-maintained-higher-rates-of-clinical-histologic-and-endoscopic-remission-at-week-38">J&amp;J</a></td></tr><tr><td>UC, open-label</td><td>OD-001 (RIPK2)</td><td>Ph2a, 20 mg BID</td><td class="num">27</td><td class="num">no placebo</td><td class="num">—</td><td>Week 12</td><td><a href="https://www.globenewswire.com/news-release/2026/10/20/3384218/0/en/odyssey-therapeutics-presents-completed-phase-2a-od-001-induction-results-strengthening-clinical-proof-of-concept-at-ueg-week-2026.html">Odyssey</a></td></tr></tbody></table></div>
+  <p class="figcap">Separate trials with different populations, endpoints and timepoints; comparisons are directional only. Crohn's remission (CDAI) and UC remission (modified Mayo) use different scores. Tulisokibart's row is the Phase 2 primary analysis (cohort 1); a biomarker-positive subgroup showed 32% vs 11%. Obefazimod's maintenance difference is the company-reported placebo-adjusted figure (raw 51.3 − 10.4 = 40.9). *Mirikizumab figures conflict across sources by endpoint and timepoint. Tulisokibart's Phase 3 (June 2026) is unpublished.</p>
+</section>
+
+<section id="method">
+  <p class="eyebrow">A5 · Methodology</p>
+  <h2>How this was built, and what it misses</h2>
+  <p class="intro">Compiled from company releases, trial registries, peer-reviewed reports and conference abstracts. Figures are quoted as published; nothing was estimated or interpolated. Company-reported and conference figures are labelled as such. The claims behind the summary and framework were checked against primary sources on 28 October 2026 (listed under Key sources).</p>
+  <p class="intro"><strong>How AI was used.</strong> AI tools (Claude) were used to search for, extract and organise sources, run the trial-registry sweep and build this page. Mechanism classification, interpretation and the investment judgements are the author's, and material claims were checked by the author against the linked sources.</p>
+  <p class="intro"><strong>This is not a census, and it should not be read as one.</strong> A 2026 review counts over 100 investigational agents in Phase 2–3 for ulcerative colitis alone. The map covers mechanism classes and the programmes that define them. Known systematic holes: Map 1 was built without a trial-registry pull — Map 2 adds one (22 October), and its 84 new programmes are not yet folded into Map 1; the curated map underrepresents Chinese and Japanese pipelines, although the registry view captures many Chinese-sponsored trials; preclinical companies appear only where they reached the trade press; and no subscription pipeline database was used. An earlier version of this page understated its own gaps, and one of its claims — that no 2026 financing had gone to immune reprogramming in IBD — was withdrawn after a wider sweep found several.</p>
+  <h3 style="margin-bottom:.75rem">Known gaps</h3>
+  <ol class="gaps">
+    <li>Tulisokibart's Phase 3 efficacy figures are topline only — the single most consequential missing number here.</li>
+    <li>Phase 3 efficacy for duvakitug and afimkibart not found.</li>
+    <li>Mirikizumab remission figures conflict across sources, using different endpoints and timepoints.</li>
+    <li>Obefazimod's induction placebo-adjusted delta is reported four different ways across four sources.</li>
+    <li>Coultreon's IBD relevance is unconfirmed; the company states autoimmune disease without naming IBD.</li>
+    <li>SPY003 is confirmed as a half-life-extended anti-IL-23p19 antibody; SPY002's target is not yet verified against company materials.</li>
+    <li>A ClinicalTrials.gov sweep was run on 22 October 2026 (Map 2): 286 trials, 104 programmes, 84 not on Map 1, and 32 of those with no disclosed mechanism. They are shown, not yet scored.</li>
+    <li>Crohn's disease is underrepresented relative to ulcerative colitis throughout, reflecting where the literature sits. The one Crohn's benchmark so far is risankizumab's AFFIRM trial; Crohn's and UC remission figures use different scores and placebo rates and are not compared on the chart.</li>
+    <li>Microbiome and barrier-repair classes are thin here and deserve their own pass.</li>
+    <li>RXC008's Phase 1 pharmacokinetic figures were not retrievable, and first-patient dosing in ROCKETEER is not yet confirmed. The Skye–Redx combination into Fibrx still requires shareholder votes, UK High Court sanction and Nasdaq approval.</li>
+    <li>Icotrokinra's Phase 2b now has a primary source (NEJM, 14 October 2026, n=252), but the matching placebo remission rate was not retrievable, which is why it stays off the chart.</li>
+    <li>DUET figures are from conference coverage and a company release, not a peer-reviewed report.</li>
+    <li>JNJ-78934804 appears in DDW coverage as a dual IL-23/TNF co-antibody and is probably the same asset as JNJ-4804 under another code. It is counted once, not twice.</li>
+    <li>Sonoma Biotherapeutics, Abata and GentiBio run Treg programmes but no IBD indication was confirmed for any of them, so they are off the map rather than on it unverified.</li>
+    <li>Mufemilast's sponsor was not identified. Mestag's M402 is described for inflammatory disease without IBD being named explicitly.</li>
+    <li>The OSM/OSMR axis has strong biomarker validation in anti-TNF-refractory IBD, but Genentech's anti-OSMR antibody vixarelimab was terminated for futility in UC (NCT06137183): the axis has been tried and did not work in that setting.</li>
+  </ol>
+</section>
+
+<section id="sources">
+  <p class="eyebrow">A6 · Sources</p>
+  <h2>Primary sources behind the conclusions</h2>
+  <p class="intro">Sources for the claims that drive the summary and framework, accessed October 2026. Each registry chip in the registry view links to its own trial record.</p>
+  <ul class="srcs"><li><span class="stag">Efficacy bar</span> <a href="https://www.gastrojournal.org/article/S0016-5085(24)05480-5/fulltext">AGA 2024 evidence synthesis, UC advanced therapies</a></li><li><span class="stag">Efficacy bar</span> <a href="https://ir.abivax.com/news-releases/news-release-details/abivax-announces-landmark-phase-3-abtect-maintenance-trial">Abivax ABTECT maintenance results (obefazimod)</a></li><li><span class="stag">Efficacy bar</span> <a href="https://www.merck.com/news/mercks-tulisokibart-met-primary-and-key-secondary-endpoints-in-the-phase-3-atlas-uc-induction-only-study-in-patients-with-moderately-to-severely-active-ulcerative-colitis/">Merck: tulisokibart ATLAS-UC Phase 3 topline</a></li><li><span class="stag">Efficacy bar</span> <a href="https://news.abbvie.com/2026-03-02-AbbVie-Announces-Positive-Topline-Results-from-Phase-3-AFFIRM-Study-Evaluating-SKYRIZI-R-Risankizumab-Subcutaneous-Induction-in-Patients-with-Crohns-Disease">AbbVie: risankizumab SC induction, AFFIRM (Crohn's)</a></li><li><span class="stag">Efficacy bar</span> <a href="https://www.nejm.org/doi/full/10.1056/NEJMoa2604435">Icotrokinra Phase 2 in UC, NEJM 2026;395:1495–1504</a></li><li><span class="stag">Deals</span> <a href="https://medcitynews.com/2026/10/gilead-sciences-oral-peptide-il-23-inhibitor-pepstar-immunology-inflammation-ibd-gild/">Gilead acquires PepStar's HCXT-2001 (MedCity, Oct 2026)</a></li><li><span class="stag">Deals</span> <a href="https://www.jnj.com/media-center/press-releases/results-of-novel-clinical-study-of-guselkumab-and-golimumab-combination-therapy-show-adults-with-moderately-to-severely-active-ulcerative-colitis-maintained-higher-rates-of-clinical-histologic-and-endoscopic-remission-at-week-38">J&amp;J DUET combination data</a></li><li><span class="stag">Negative evidence</span> <a href="https://clinicaltrials.gov/study/NCT06137183">Vixarelimab Phase 2 results, NCT06137183</a></li><li><span class="stag">Negative evidence</span> <a href="https://academic.oup.com/ecco-jcc/article/19/6/jjaf080/8129055">Deucravacitinib in IBD, J Crohns Colitis 2025</a></li><li><span class="stag">Negative evidence</span> <a href="https://www.gastrojournal.org/article/S0016-5085(11)01570-8/fulltext">Rituximab in active UC (Gastroenterology summary)</a></li><li><span class="stag">RIPK2</span> <a href="https://www.globenewswire.com/news-release/2026/10/20/3384218/0/en/odyssey-therapeutics-presents-completed-phase-2a-od-001-induction-results-strengthening-clinical-proof-of-concept-at-ueg-week-2026.html">Odyssey OD-001 Phase 2a, UEG Week 2026</a></li><li><span class="stag">RIPK2</span> <a href="https://clinicaltrials.gov/study/NCT07755241">Accro Bioscience AC-101 Phase 2b, NCT07755241</a></li><li><span class="stag">Fibrosis</span> <a href="https://sofinnovapartners.com/news/redx-announces-design-of-rocketeer-phase-2-trial-for-rxc008-in-fibrostenotic-crohn-s-disease">Redx RXC008 ROCKETEER design</a></li><li><span class="stag">Stroma</span> <a href="https://www.nature.com/articles/s41590-026-02617-0">Koplev et al., Nature Immunology 2026</a></li><li><span class="stag">Stroma</span> <a href="https://www.nature.com/articles/s41588-025-02225-y">Kong et al., Nature Genetics 2025</a></li><li><span class="stag">Stroma</span> <a href="https://www.nature.com/articles/s41586-025-09907-x">Pokatayev et al., Nature 2026</a></li><li><span class="stag">Subgroups</span> <a href="https://www.nejm.org/doi/full/10.1056/NEJMoa2513654">Gharahdaghi et al., NEJM 2026 (anti-IL-10 autoantibodies)</a></li><li><span class="stag">Registry</span> <a href="https://clinicaltrials.gov/">ClinicalTrials.gov (registry view, pulled 22 Oct 2026)</a></li></ul>
+</section>
+
+<footer>
+  <p>Independent research by Xinyue Li, October 2026; last verified 28 October 2026. AI-assisted research as described under Method; interpretation and investment judgments are the author's. Nothing here is investment advice or a clinical recommendation. <a href="index.html">Back to the investment summary</a>.</p>
+</footer>
+</div>
